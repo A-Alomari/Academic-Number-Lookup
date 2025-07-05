@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+</head>
+    <style>
+      body {
+        background: #f5f5f5;
+        min-height: 100vh;
+        font-family: Tahoma, Arial, sans-serif !important;
+      }
+      .main-title {
+        background: linear-gradient(90deg, #a80000 0%, #d32f2f 100%);
+        color: #fff;
+        font-size: 2.1rem;
+        font-weight: bold;
+        border-radius: 1.2rem 1.2rem 0 0;
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        text-align: center;
+        margin-bottom: 0;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 8px 0 rgba(168,0,0,0.08);
+      }
+      .card {
+        border: none;
+        border-radius: 1.2rem;
+        background: #fff;
+        box-shadow: 0 4px 24px 0 rgba(168,0,0,0.10);
+        margin-top: 0;
+      }
+      .form-control-lg {
+        border-radius: 0.8rem;
+        font-size: 1.25rem;
+        border: 2px solid #a80000;
+        transition: box-shadow 0.2s;
+        text-align: right;
+      }
+      .form-control-lg:focus {
+        box-shadow: 0 0 0 0.2rem #a8000033;
+        border-color: #d32f2f;
+      }
+      .btn-primary {
+        background: linear-gradient(90deg, #a80000 0%, #d32f2f 100%);
+        border: none;
+        border-radius: 0.8rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 8px 0 rgba(168,0,0,0.10);
+      }
+      .btn-primary:active, .btn-primary:focus {
+        background: linear-gradient(90deg, #7f0000 0%, #a80000 100%);
+      }
+      .modal-content {
+        border-radius: 1.2rem;
+        background: #f8fafc;
+        box-shadow: 0 8px 32px 0 rgba(168,0,0,0.10);
+      }
+      .modal-title {
+        color: #a80000;
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+      #ModalStudentDetails {
+        font-size: 1.15rem;
+        color: #222;
+      }
+      .mb-2 b {
+        color: #a80000;
+      }
+      .text-primary {
+        color: #545454 !important;
+      }
+      .min-vh-100 {
+        min-height: 100vh !important;
+      }
+      .card-container {
+        max-width: 480px;
+      }
+      .logo-img {
+        max-width: 320px;
+        width: 100%;
+        height: auto;
+        margin-top: 1.2rem;
+      }
+      .custom-title {
+        border-radius: 0.8rem;
+        font-size: 2rem;
+      }
+      .custom-subtitle {
+        color: #a80000;
+        font-weight: bold;
+      }
+      @media (max-width: 600px) {
+        .card-container {
+          max-width: 100% !important;
+        }
+      }
+    </style>
+<body>
+    <div class="d-flex align-items-center justify-content-center flex-column flex-md-row min-vh-100">
+      <div class="w-100 px-2 card-container">
+          <div class="d-flex justify-content-center mb-3">
+            <img src="https://www.moedu.gov.bh/desired_results/images/logo-hor-ar.png" class="logo-img">
+          </div>
+          <div class="card p-4 mt-0">
+            <h2 class="main-title mb-4 custom-title">لمعرفة الرقم الأكاديمي</h2>
+            <h4 class="text-center mb-4 custom-subtitle">أدخل الرقم الشخصي</h4>
+            <div class="mb-3">
+              <label for="CPRInputFeild" class="form-label visually-hidden">الرقم الشخصي</label>
+              <div class="input-group input-group-lg" dir="rtl">
+                <input type="text" id="CPRInputFeild" class="form-control form-control-lg" placeholder="الرقم الشخصي"
+                autofocus onkeydown="if(event.key==='Enter'){SearchStudentDetails();}" style="direction:rtl;">
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button onclick="SearchStudentDetails()" id="SearchButton" class="btn btn-primary btn-lg">بحث</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="StudentDetailsModal" tabindex="-1" aria-labelledby="StudentDetailsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title w-100 text-center" id="StudentDetailsModalLabel">البيانات الشخصية</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center" id="ModalStudentDetails"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function SearchStudentDetails() {
+        const CPRNumber = document.getElementById("CPRInputFeild").value.trim();
+        if (CPRNumber === '') {
+          ShowStudentDetailsModal('<span style="color:red">الرجاء إدخال الرقم الشخصي</span>');
+          return;
+        }
+        if (!/^\d{9}$/.test(CPRNumber)) {
+          ShowStudentDetailsModal('<span style="color:red">الرقم الشخصي يجب أن يتكون من 9 أرقام فقط</span>');
+          return;
+        }
+        Loading(true);
+        google.script.run.withSuccessHandler(DisplayStudentDetails).SearchCPR(CPRNumber);
+      }
+
+      function DisplayStudentDetails(StudentDetails) {
+        Loading(false);
+        if (Array.isArray(StudentDetails)) {
+          const Name = StudentDetails[0] || '';
+          const Class = StudentDetails[1] || '';
+          const AcademicNumber = StudentDetails[2] || '';
+          const StudentDetailsMessage = `
+            <div class="mb-2" dir="rtl" style="text-align:right;">
+              <b>الاسم:</b> <span class="text-primary">${Name}</span>
+            </div>
+            <div class="mb-2" dir="rtl" style="text-align:right;">
+              <b>الصف:</b> <span class="text-primary">${Class}</span>
+            </div>
+            <div class="mb-2" dir="rtl" style="text-align:right;">
+              <b>الرقم الأكاديمي:</b> <span class="text-primary">${AcademicNumber}</span>
+            </div>
+          `;
+          ShowStudentDetailsModal(StudentDetailsMessage);
+        } else {
+          ShowStudentDetailsModal(`<span style="color:#545454">${StudentDetails}</span>`);
+        }
+      }
+
+      function ShowStudentDetailsModal(StudentDetails) {
+        document.getElementById('ModalStudentDetails').innerHTML = StudentDetails;
+        var myModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('StudentDetailsModal'));
+        myModal.show();
+      }
+
+      function Loading(Loading) {
+        const btn = document.getElementById('SearchButton');
+        if (Loading) {
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = 'بحث';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById('StudentDetailsModal');
+        modal.addEventListener('hidden.bs.modal', function () {
+          document.getElementById('CPRInputFeild').focus();
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 # Academic Number Lookup
 
-![App Screenshot](PLACE_YOUR_IMAGE_HERE)
+![App Screenshot](Image/App.PNG)
 
 This project allows users to enter their CPR and retrieve their academic number, name, and class from a Google Sheet using a web interface.
 
@@ -22,7 +22,7 @@ This project allows users to enter their CPR and retrieve their academic number,
 ## Setup Instructions
 
 ### 1. Prepare Your Google Sheet
-1. Create a new Google Sheet. [https://docs.google.com/spreadsheets/]
+1. Create a new [Google Sheet.] (https://docs.google.com/spreadsheets/)
 2. Name your sheet tab (default: `CPR`).
 3. Add columns for CPR, Name, Class, and Academic Number.
 > You can change the column letters and sheet name later in the script.
@@ -46,6 +46,7 @@ const AcademicNumberLoction = 'D'; // Column letter for Academic Number
 ```
 - Change the values as needed to match your sheet structure.
 - Column letters are case-insensitive.
+![Prepare Screenshot](Image/Create.PNG)
 
 ### 4. Deploy as a Web App
 1. In the Apps Script editor, click **Deploy > New deployment**.
@@ -55,6 +56,7 @@ const AcademicNumberLoction = 'D'; // Column letter for Academic Number
 5. Set **Who has access** to: `Anyone`
 6. Click **Deploy** and authorize the script.
 7. Copy the web app URL and share it with users.
+![Prepare Screenshot](Image/Deploy.PNG)
 
 ---
 
