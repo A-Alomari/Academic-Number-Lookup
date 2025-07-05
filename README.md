@@ -46,7 +46,8 @@ const AcademicNumberLoction = 'D'; // Column letter for Academic Number
 ```
 - Change the values as needed to match your sheet structure.
 - Column letters are case-insensitive.
-![Prepare Screenshot](Image/Create.PNG)
+
+![Prepare Screenshot](Image/Create.png)
 
 ### 4. Deploy as a Web App
 1. In the Apps Script editor, click **Deploy > New deployment**.
@@ -56,7 +57,8 @@ const AcademicNumberLoction = 'D'; // Column letter for Academic Number
 5. Set **Who has access** to: `Anyone`
 6. Click **Deploy** and authorize the script.
 7. Copy the web app URL and share it with users.
-![Prepare Screenshot](Image/Deploy.PNG)
+
+![Deploy Screenshot](Image/Deploy.png)
 
 ---
 
