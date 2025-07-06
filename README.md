@@ -22,7 +22,7 @@ This project allows users to enter their CPR and retrieve their academic number,
 ## Setup Instructions
 
 ### 1. Prepare Your Google Sheet
-1. Create a new [Google Sheet.] (https://docs.google.com/spreadsheets/)
+1. Create a new [Google Sheet.](https://docs.google.com/spreadsheets/)
 2. Name your sheet tab (default: `CPR`).
 3. Add columns for CPR, Name, Class, and Academic Number.
 > You can change the column letters and sheet name later in the script.
