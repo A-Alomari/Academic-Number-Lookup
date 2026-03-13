@@ -19,7 +19,7 @@ function SearchCPR(userInput) {
     return "لم يتم العثور على صفحة البيانات، تأكد من اسم الصفحة";
   }
   const data = sheet.getDataRange().getValues();
-  if (data.length = 0) {
+  if (data.length === 0) {
     return "لا توجد بيانات في الصفحة";
   }
 
